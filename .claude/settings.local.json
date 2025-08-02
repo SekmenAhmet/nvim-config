@@ -4,7 +4,9 @@
       "Bash(nvim:*)",
       "Bash(rm:*)",
       "Bash(powershell:*)",
-      "Bash(cargo check:*)"
+      "Bash(cargo check:*)",
+      "Bash(git ls-tree:*)",
+      "Bash(git rm:*)"
     ],
     "deny": []
   }
