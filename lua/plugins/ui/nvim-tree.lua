@@ -47,26 +47,10 @@ return {
         ignore_list = {},
       },
       diagnostics = {
-        enable = true,
-        show_on_dirs = false,
-        debounce_delay = 50,
-        severity = {
-          min = vim.diagnostic.severity.HINT,
-          max = vim.diagnostic.severity.ERROR,
-        },
-        icons = {
-          hint = "H",
-          info = "I",
-          warning = "W",
-          error = "E",
-        },
+        enable = false,
       },
     })
 
-    -- Keymaps pour nvim-tree
-    vim.keymap.set("n", "<C-b>", ":NvimTreeToggle<CR>", { desc = "Toggle file explorer" })
-    vim.keymap.set("n", "<leader>ef", ":NvimTreeFindFileToggle<CR>", { desc = "Toggle file explorer on current file" })
-    vim.keymap.set("n", "<leader>ec", ":NvimTreeCollapse<CR>", { desc = "Collapse file explorer" })
-    vim.keymap.set("n", "<leader>er", ":NvimTreeRefresh<CR>", { desc = "Refresh file explorer" })
+    -- Keymaps centralisés dans config/keymaps.lua
   end,
 }

@@ -7,8 +7,8 @@ return {
       auto_session_enable_last_session = false,
       auto_session_root_dir = vim.fn.stdpath("data") .. "/sessions/",
       auto_session_enabled = true,
-      auto_save_enabled = nil,
-      auto_restore_enabled = nil,
+      auto_save_enabled = true,
+      auto_restore_enabled = false, -- Désactiver la restauration automatique
       auto_session_suppress_dirs = { "~/", "~/Projects", "~/Downloads", "/", "C:\\", "C:\\Users", "C:\\Users\\sekme" },
       auto_session_use_git_branch = false,
       bypass_session_save_file_types = {
@@ -39,17 +39,12 @@ return {
       },
       post_restore_cmds = {
         function()
-          -- Commandes à exécuter après la restauration d'une session
-          -- Peut être utile pour rouvrir certains plugins ou fenêtres
+          -- Désactiver les folds pour éviter les erreurs
+          vim.cmd("set nofoldenable")
         end,
       },
     })
 
-    -- Keymaps pour auto-session
-    vim.keymap.set("n", "<leader>qs", ":SessionSave<CR>", { desc = "Save session" })
-    vim.keymap.set("n", "<leader>qr", ":SessionRestore<CR>", { desc = "Restore session" })
-    vim.keymap.set("n", "<leader>qd", ":SessionDelete<CR>", { desc = "Delete session" })
-    vim.keymap.set("n", "<leader>qf", ":Autosession search<CR>", { desc = "Find sessions" })
-    vim.keymap.set("n", "<leader>qp", ":SessionPurgeOrphaned<CR>", { desc = "Purge orphaned sessions" })
+    -- Keymaps centralisés dans config/keymaps.lua
   end,
 }

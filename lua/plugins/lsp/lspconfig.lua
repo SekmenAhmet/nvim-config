@@ -1,15 +1,27 @@
--- LSP Configuration
+-- LSP Configuration avec chargement conditionnel
 return {
   "neovim/nvim-lspconfig",
   dependencies = { "hrsh7th/cmp-nvim-lsp" },
+  ft = { "python", "javascript", "typescript", "typescriptreact", "go", "rust", "java", "dockerfile", "yaml" },
   config = function()
     local lspconfig = require("lspconfig")
     local cmp_nvim_lsp = require("cmp_nvim_lsp")
     
     local capabilities = cmp_nvim_lsp.default_capabilities()
 
-    -- Configuration Python
-    lspconfig.pyright.setup({
+    -- Fonction helper pour setup conditionnel
+    local function setup_lsp_for_filetype(server, filetypes, config)
+      vim.api.nvim_create_autocmd("FileType", {
+        pattern = filetypes,
+        callback = function()
+          lspconfig[server].setup(config)
+        end,
+        once = true,
+      })
+    end
+
+    -- Python - seulement sur fichiers .py
+    setup_lsp_for_filetype("pyright", { "python" }, {
       capabilities = capabilities,
       settings = {
         python = {
@@ -22,37 +34,35 @@ return {
       }
     })
 
-    -- Configuration TypeScript
-    lspconfig.ts_ls.setup({
+    -- TypeScript/JavaScript - seulement sur fichiers .ts/.js/.tsx/.jsx
+    setup_lsp_for_filetype("ts_ls", { "javascript", "typescript", "typescriptreact", "javascriptreact" }, {
       capabilities = capabilities,
       settings = {
         typescript = {
           inlayHints = {
-            includeInlayParameterNameHints = "all",
-            includeInlayParameterNameHintsWhenArgumentMatchesName = false,
-            includeInlayFunctionParameterTypeHints = true,
-            includeInlayVariableTypeHints = true,
-            includeInlayPropertyDeclarationTypeHints = true,
-            includeInlayFunctionLikeReturnTypeHints = true,
-            includeInlayEnumMemberValueHints = true,
+            includeInlayParameterNameHints = "literals",
+            includeInlayFunctionParameterTypeHints = false,
+            includeInlayVariableTypeHints = false,
+            includeInlayPropertyDeclarationTypeHints = false,
+            includeInlayFunctionLikeReturnTypeHints = false,
+            includeInlayEnumMemberValueHints = false,
           }
         },
         javascript = {
           inlayHints = {
-            includeInlayParameterNameHints = "all",
-            includeInlayParameterNameHintsWhenArgumentMatchesName = false,
-            includeInlayFunctionParameterTypeHints = true,
-            includeInlayVariableTypeHints = true,
-            includeInlayPropertyDeclarationTypeHints = true,
-            includeInlayFunctionLikeReturnTypeHints = true,
-            includeInlayEnumMemberValueHints = true,
+            includeInlayParameterNameHints = "literals",
+            includeInlayFunctionParameterTypeHints = false,
+            includeInlayVariableTypeHints = false,
+            includeInlayPropertyDeclarationTypeHints = false,
+            includeInlayFunctionLikeReturnTypeHints = false,
+            includeInlayEnumMemberValueHints = false,
           }
         }
       }
     })
 
-    -- Configuration Go
-    lspconfig.gopls.setup({
+    -- Go - seulement sur fichiers .go
+    setup_lsp_for_filetype("gopls", { "go" }, {
       capabilities = capabilities,
       settings = {
         gopls = {
@@ -74,96 +84,84 @@ return {
             vendor = true,
           },
           hints = {
-            assignVariableTypes = true,
-            compositeLiteralFields = true,
-            compositeLiteralTypes = true,
-            constantValues = true,
-            functionTypeParameters = true,
-            parameterNames = true,
-            rangeVariableTypes = true,
+            assignVariableTypes = false,
+            compositeLiteralFields = false,
+            compositeLiteralTypes = false,
+            constantValues = false,
+            functionTypeParameters = false,
+            parameterNames = false,
+            rangeVariableTypes = false,
           },
           usePlaceholders = true,
           completeUnimported = true,
+          importShortcut = "Both",
+          symbolMatcher = "FastFuzzy",
           directoryFilters = { "-.git", "-.vscode", "-.idea", "-.vscode-test", "-node_modules" },
           semanticTokens = true,
         },
       },
     })
 
-    -- Configuration Rust
-    lspconfig.rust_analyzer.setup({
+    -- Rust - seulement sur fichiers .rs
+    setup_lsp_for_filetype("rust_analyzer", { "rust" }, {
       capabilities = capabilities,
+      on_attach = function(client, bufnr)
+        client.server_capabilities.semanticTokensProvider = nil
+        client.server_capabilities.codeLensProvider = nil
+      end,
       settings = {
         ["rust-analyzer"] = {
-          assist = {
-            importGranularity = "module",
-            importPrefix = "by_self",
-          },
           cargo = {
-            loadOutDirsFromCheck = true,
-            allFeatures = true,
+            loadOutDirsFromCheck = false,
+            allFeatures = false,
           },
           procMacro = {
             enable = true,
           },
           checkOnSave = {
-            command = "clippy",
+            command = "check",
           },
-          inlayHints = {
-            lifetimeElisionHints = {
-              enable = "never",
-              useParameterNames = false,
-            },
-            expressionAdjustmentHints = {
-              enable = "never",
-            },
-            reborrowHints = {
-              enable = "never",
-            },
-            renderColons = true,
-            typeHints = {
-              enable = true,
-              hideClosureInitialization = false,
-              hideNamedConstructor = false,
-            },
-            parameterHints = {
-              enable = true,
-            },
-            chainingHints = {
-              enable = true,
-            },
-            maxLength = 25,
-          },
-          lens = {
+          diagnostics = {
             enable = true,
-          },
-          hover = {
-            actions = {
-              enable = true,
-            },
-          },
-          semanticHighlighting = {
-            strings = {
-              enable = true,
+            experimental = {
+              enable = false,
             },
           },
           completion = {
-            postfix = {
-              enable = true,
-            },
-            privateEditable = {
-              enable = false,
-            },
             callable = {
               snippets = "fill_arguments",
+            },
+            autoimport = {
+              enable = true,
+            },
+          },
+          imports = {
+            granularity = {
+              group = "module",
+            },
+            prefix = "self",
+          },
+          assist = {
+            importEnforceGranularity = true,
+            importPrefix = "plain",
+          },
+          inlayHints = {
+            typeHints = {
+              enable = false,
+            },
+            parameterHints = {
+              enable = false,
+            },
+            chainingHints = {
+              enable = false,
             },
           },
         },
       },
     })
 
-    -- Configuration Java
-    lspconfig.jdtls.setup({
+    -- Java - seulement sur fichiers .java
+    setup_lsp_for_filetype("jdtls", { "java" }, {
       capabilities = capabilities,
       settings = {
         java = {
@@ -205,15 +203,15 @@ return {
           },
           inlayHints = {
             parameterNames = {
-              enabled = "all",
+              enabled = "none",
             },
           },
         },
       },
     })
 
-    -- Configuration Docker
-    lspconfig.dockerls.setup({
+    -- Docker - seulement sur Dockerfile
+    setup_lsp_for_filetype("dockerls", { "dockerfile" }, {
       capabilities = capabilities,
       settings = {
         docker = {
@@ -226,14 +224,14 @@ return {
       },
     })
 
-    -- Configuration Docker Compose
-    lspconfig.docker_compose_language_service.setup({
+    -- Docker Compose - seulement sur docker-compose.yml
+    setup_lsp_for_filetype("docker_compose_language_service", { "yaml" }, {
       capabilities = capabilities,
       settings = {},
     })
 
-    -- Configuration YAML
-    lspconfig.yamlls.setup({
+    -- YAML - seulement sur fichiers .yml/.yaml
+    setup_lsp_for_filetype("yamlls", { "yaml" }, {
       capabilities = capabilities,
       settings = {
         yaml = {
@@ -262,6 +260,12 @@ return {
         vim.keymap.set("n", "gi", vim.lsp.buf.implementation, opts)
         vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, opts)
         vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, opts)
+        vim.keymap.set("n", "<leader>oi", function()
+          vim.lsp.buf.code_action({
+            context = { only = { "source.organizeImports" } },
+            apply = true,
+          })
+        end, opts)
         vim.keymap.set("n", "gr", vim.lsp.buf.references, opts)
       end,
     })

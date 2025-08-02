@@ -2,14 +2,13 @@
 return {
   "windwp/nvim-autopairs",
   event = "InsertEnter",
+  dependencies = { "hrsh7th/nvim-cmp" },
   config = function()
-    require("nvim-autopairs").setup({
-      check_ts = true,
-      ts_config = {
-        lua = {'string', 'source'},
-        javascript = {'string', 'template_string'},
-        java = false,
-      },
+    local npairs = require("nvim-autopairs")
+    local Rule = require("nvim-autopairs.rule")
+
+    npairs.setup({
+      check_ts = false,
       disable_filetype = { "TelescopePrompt", "spectre_panel" },
       disable_in_macro = true,
       disable_in_visualblock = false,
@@ -28,23 +27,25 @@ return {
       map_c_w = false,
     })
 
-    -- Règles personnalisées pour différents types de fichiers
-    local Rule = require('nvim-autopairs.rule')
-    local npairs = require('nvim-autopairs')
+    -- Intégration avec nvim-cmp
+    local cmp_autopairs = require("nvim-autopairs.completion.cmp")
+    local cmp = require("cmp")
+    cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done())
 
+    -- Règles personnalisées pour différents types de fichiers
     -- Règle pour les backticks en markdown
-    npairs.add_rule(Rule('`', '`', 'markdown'))
+    npairs.add_rule(Rule("`", "`", "markdown"))
     
     -- Règle pour les triple backticks en markdown
-    npairs.add_rule(Rule('```', '```', 'markdown'))
+    npairs.add_rule(Rule("```", "```", "markdown"))
     
     -- Règle pour les dollar signs en LaTeX/markdown (math mode)
-    npairs.add_rule(Rule('$', '$', {'tex', 'latex', 'markdown'}))
+    npairs.add_rule(Rule("$", "$", {"tex", "latex", "markdown"}))
     
     -- Règle pour les angles brackets
-    npairs.add_rule(Rule('<', '>', {'html', 'xml', 'vue', 'typescript', 'javascript', 'rust'}))
+    npairs.add_rule(Rule("<", ">", {"html", "xml", "vue", "typescript", "javascript", "rust"}))
     
     -- Amélioration pour les fonctions fléchées
-    npairs.add_rule(Rule('%(.*%)%s*%=>$', ' {', {'typescript', 'javascript'}):use_regex(true):set_end_pair_length(1))
+    npairs.add_rule(Rule("%(.*%)%s*%=>$", " {", {"typescript", "javascript"}):use_regex(true):set_end_pair_length(1))
   end,
 }
