@@ -1,0 +1,44 @@
+# Neovim temporary files
+*.swp
+*.swo
+*~
+
+# Plugin manager files
+lazy-lock.json
+
+# Debug files
+debug.log
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Backup files
+*.bak
+*.backup
+
+# Compiled Lua
+*.luac
+
+# LSP logs
+lsp.log
+
+# Mason installs (if using portable mode)
+mason/
+
+# Session files
+Session.vim
+.session
+
+# Rust build artifacts
+rust_audit/target/
+target/
+**/target/
+
+# Debug files and artifacts
+debug_rust.rs
+test.rs
+
+# Claude configuration
+.claude/
