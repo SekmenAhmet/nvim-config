@@ -2,7 +2,7 @@
 return {
   "neovim/nvim-lspconfig",
   dependencies = { "hrsh7th/cmp-nvim-lsp" },
-  ft = { "python", "javascript", "typescript", "typescriptreact", "go", "rust", "java", "dockerfile", "yaml" },
+  event = { "BufReadPre", "BufNewFile" },
   config = function()
     local lspconfig = require("lspconfig")
     local cmp_nvim_lsp = require("cmp_nvim_lsp")
@@ -102,63 +102,7 @@ return {
       },
     })
 
-    -- Rust - seulement sur fichiers .rs
-    setup_lsp_for_filetype("rust_analyzer", { "rust" }, {
-      capabilities = capabilities,
-      on_attach = function(client, bufnr)
-        client.server_capabilities.semanticTokensProvider = nil
-        client.server_capabilities.codeLensProvider = nil
-      end,
-      settings = {
-        ["rust-analyzer"] = {
-          cargo = {
-            loadOutDirsFromCheck = false,
-            allFeatures = false,
-          },
-          procMacro = {
-            enable = true,
-          },
-          checkOnSave = {
-            command = "check",
-          },
-          diagnostics = {
-            enable = true,
-            experimental = {
-              enable = false,
-            },
-          },
-          completion = {
-            callable = {
-              snippets = "fill_arguments",
-            },
-            autoimport = {
-              enable = true,
-            },
-          },
-          imports = {
-            granularity = {
-              group = "module",
-            },
-            prefix = "self",
-          },
-          assist = {
-            importEnforceGranularity = true,
-            importPrefix = "plain",
-          },
-          inlayHints = {
-            typeHints = {
-              enable = false,
-            },
-            parameterHints = {
-              enable = false,
-            },
-            chainingHints = {
-              enable = false,
-            },
-          },
-        },
-      },
-    })
+    -- Rust - Géré par rust-tools.nvim (voir plugins/rust/)
 
     -- Java - seulement sur fichiers .java
     setup_lsp_for_filetype("jdtls", { "java" }, {

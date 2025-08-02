@@ -16,6 +16,7 @@ require("lazy").setup({
     { import = "plugins.terminal" },
     { import = "plugins.session" },
     { import = "plugins.theme" },
+    { import = "plugins.rust" }, -- Configuration Rust ultime
   },
   checker = { enabled = false },
   performance = {

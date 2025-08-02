@@ -5,19 +5,5 @@ return {
   require("plugins.editor.comment"),
   require("plugins.editor.surround"),
   require("plugins.editor.autopairs"),
-  -- TreeSitter text objects
-  {
-    "nvim-treesitter/nvim-treesitter-textobjects",
-    event = "VeryLazy",
-    dependencies = "nvim-treesitter/nvim-treesitter",
-  },
-  -- Dépendance pour Telescope
-  {
-    "nvim-lua/plenary.nvim",
-  },
-  -- Extension FZF pour Telescope
-  {
-    "nvim-telescope/telescope-fzf-native.nvim",
-    build = "make",
-  },
+  require("plugins.editor.conform"),
 }

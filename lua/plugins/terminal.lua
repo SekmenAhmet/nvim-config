@@ -17,7 +17,7 @@ return {
       persist_mode = true,
       direction = "float",
       close_on_exit = true,
-      shell = "powershell.exe",
+      shell = vim.fn.has("win32") == 1 and "powershell.exe" or vim.o.shell,
       auto_scroll = true,
       float_opts = {
         border = "curved",

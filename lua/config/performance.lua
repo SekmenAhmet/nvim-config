@@ -2,7 +2,6 @@
 local opt = vim.opt
 
 -- Optimiser le rendu
-opt.lazyredraw = true
 opt.ttyfast = true
 opt.redrawtime = 1500
 
@@ -20,9 +19,7 @@ vim.g.loaded_ruby_provider = 0
 vim.g.loaded_perl_provider = 0
 vim.g.loaded_node_provider = 0
 
--- Optimiser les updatetime
-opt.updatetime = 1000 -- Augmenter de 300ms à 1000ms
-opt.timeoutlen = 500 -- Réduire le timeout des keymaps
+-- Les updatetime et timeoutlen sont définis dans options.lua
 
 -- Optimiser les swap et backup
 opt.directory = vim.fn.stdpath("cache") .. "/swap"

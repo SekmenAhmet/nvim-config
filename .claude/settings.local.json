@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(nvim:*)",
+      "Bash(rm:*)",
+      "Bash(powershell:*)",
+      "Bash(cargo check:*)"
+    ],
+    "deny": []
+  }
+}

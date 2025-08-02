@@ -24,6 +24,8 @@ return {
         "yaml",
         "markdown",
         "bash",
+        "rust",
+        "go",
       },
       sync_install = false,
       auto_install = false, -- Désactiver pour éviter les téléchargements automatiques
@@ -107,10 +109,5 @@ return {
         },
       },
     })
-    
-    -- Configuration du folding avec TreeSitter
-    vim.opt.foldmethod = "expr"
-    vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
-    vim.opt.foldenable = false -- Désactiver le folding par défaut
   end,
 }

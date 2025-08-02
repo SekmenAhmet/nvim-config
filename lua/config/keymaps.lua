@@ -90,9 +90,7 @@ keymap("n", "<leader>qp", "<Cmd>SessionPurgeOrphaned<CR>", { desc = "Purge orpha
 
 -- ==================== FORMATAGE ====================
 
--- Conform - NOUVEAU PREFIX: <leader>l pour 'language/lint' 
-keymap("n", "<leader>lf", function() require("conform").format({ async = true, lsp_fallback = true }) end, { desc = "Format buffer" })
-keymap("v", "<leader>lf", function() require("conform").format({ async = true, lsp_fallback = true }) end, { desc = "Format selection" })
+-- Le formatage est géré par conform.lua avec <leader>lf
 
 -- ==================== AUTRES RACCOURCIS UTILES ====================
 

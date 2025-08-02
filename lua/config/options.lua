@@ -70,7 +70,7 @@ opt.shortmess:append("c")
 
 -- ==================== VISUEL ====================
 opt.cursorline = true
-opt.colorcolumn = "120"
+-- opt.colorcolumn = "120"
 opt.list = true
 opt.listchars = {
   tab = "» ",
