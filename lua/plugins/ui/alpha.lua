@@ -6,49 +6,43 @@ return {
     local alpha = require("alpha")
     local dashboard = require("alpha.themes.dashboard")
 
-    -- ASCII Art Header
+    -- ASCII Art Header clean et aligné
     dashboard.section.header.val = {
-      "                                                     ",
-      "  ███╗   ██╗███████╗ ██████╗ ██╗   ██╗██╗███╗   ███╗ ",
-      "  ████╗  ██║██╔════╝██╔═══██╗██║   ██║██║████╗ ████║ ",
-      "  ██╔██╗ ██║█████╗  ██║   ██║██║   ██║██║██╔████╔██║ ",
-      "  ██║╚██╗██║██╔══╝  ██║   ██║╚██╗ ██╔╝██║██║╚██╔╝██║ ",
-      "  ██║ ╚████║███████╗╚██████╔╝ ╚████╔╝ ██║██║ ╚═╝ ██║ ",
-      "  ╚═╝  ╚═══╝╚══════╝ ╚═════╝   ╚═══╝  ╚═╝╚═╝     ╚═╝ ",
-      "                                                     ",
-      "      🚀 Prêt pour coder ? Choisissez votre mission ! ",
-      "                                                     ",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "    ╔═════════════════════════════════════════════╗",
+      "    ║                                             ║",
+      "    ║  ███████╗████████╗ █████╗ ██████╗ ████████╗ ║",
+      "    ║  ██╔════╝╚══██╔══╝██╔══██╗██╔══██╗╚══██╔══╝ ║",
+      "    ║  ███████╗   ██║   ███████║██████╔╝   ██║    ║",
+      "    ║  ╚════██║   ██║   ██╔══██║██╔══██╗   ██║    ║",
+      "    ║  ███████║   ██║   ██║  ██║██║  ██║   ██║    ║",
+      "    ║  ╚══════╝   ╚═╝   ╚═╝  ╚═╝╚═╝  ╚═╝   ╚═╝    ║",
+      "    ║                                             ║",
+      "    ║                 Ready to code?              ║",
+      "    ║                                             ║",
+      "    ╚═════════════════════════════════════════════╝",
     }
 
-    -- Menu buttons
-    dashboard.section.buttons.val = {
-      dashboard.button("e", "  Nouveau fichier", ":ene <BAR> startinsert <CR>"),
-      dashboard.button("o", "  Fichiers récents", ":Telescope oldfiles <CR>"),
-      dashboard.button("f", "  Chercher fichier", ":Telescope find_files <CR>"),
-      dashboard.button("g", "  Chercher texte", ":Telescope live_grep <CR>"),
-      dashboard.button("s", "  Restaurer session", ":SessionRestore <CR>"),
-      dashboard.button("c", "  Configuration", ":e " .. vim.fn.stdpath("config") .. "/init.lua <CR>"),
-      dashboard.button("l", "  Lazy", ":Lazy <CR>"),
-      dashboard.button("m", "  Mason", ":Mason <CR>"),
-      dashboard.button("q", "  Quitter", ":qa <CR>"),
-    }
+    -- Pas de boutons
+    dashboard.section.buttons.val = {}
 
-    -- Footer avec des stats
-    local function footer()
-      local total_plugins = require("lazy").stats().count
-      local datetime = os.date(" %d-%m-%Y   %H:%M:%S")
-      local version = vim.version()
-      local nvim_version_info = "   v" .. version.major .. "." .. version.minor .. "." .. version.patch
+    -- Pas de footer
+    dashboard.section.footer.val = ""
 
-      return "⚡ " .. total_plugins .. " plugins" .. "   " .. datetime .. "   " .. nvim_version_info
-    end
-
-    dashboard.section.footer.val = footer()
-
-    -- Configuration des couleurs
-    dashboard.section.header.opts.hl = "Include"
-    dashboard.section.buttons.opts.hl = "Keyword"
-    dashboard.section.footer.opts.hl = "Type"
+    -- Configuration des couleurs avec dégradé
+    dashboard.section.header.opts.hl = "Function"
+    
+    -- Couleurs personnalisées pour différentes parties
+    vim.api.nvim_set_hl(0, "AlphaHeader", { fg = "#7aa2f7", bold = true })
+    vim.api.nvim_set_hl(0, "AlphaBorder", { fg = "#bb9af7" })
+    vim.api.nvim_set_hl(0, "AlphaEmoji", { fg = "#f7768e" })
+    
+    dashboard.section.header.opts.hl = "AlphaHeader"
 
     -- Désactiver le folding sur alpha buffer
     dashboard.opts.opts.noautocmd = true
@@ -56,14 +50,6 @@ return {
     -- Configuration finale
     alpha.setup(dashboard.opts)
 
-    -- Auto-commandes pour alpha
-    vim.api.nvim_create_autocmd("User", {
-      pattern = "LazyVimStarted",
-      callback = function()
-        dashboard.section.footer.val = footer()
-        pcall(vim.cmd.AlphaRedraw)
-      end,
-    })
 
     -- Masquer la barre de statut sur la page alpha
     vim.api.nvim_create_autocmd("FileType", {
