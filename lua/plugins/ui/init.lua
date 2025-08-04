@@ -2,6 +2,7 @@
 return {
   require("plugins.ui.alpha"),
   require("plugins.ui.nvim-tree"),
+  require("plugins.ui.neo-tree"),
   require("plugins.ui.bufferline"),
   require("plugins.ui.indent-blankline"),
   require("plugins.ui.which-key"),

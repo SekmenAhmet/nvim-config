@@ -101,7 +101,8 @@ return {
             },
             
             -- === CLIPPY INTELLIGENT ===
-            checkOnSave = {
+            checkOnSave = true,
+            check = {
               command = "clippy",
               extraArgs = { 
                 "--", 

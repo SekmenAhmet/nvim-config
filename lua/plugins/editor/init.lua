@@ -6,4 +6,6 @@ return {
   require("plugins.editor.surround"),
   require("plugins.editor.autopairs"),
   require("plugins.editor.conform"),
+  require("plugins.editor.trouble"),
+  require("plugins.editor.flash"),
 }

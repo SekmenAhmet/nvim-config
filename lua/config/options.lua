@@ -64,6 +64,10 @@ opt.mouse = "a"
 opt.splitbelow = true
 opt.splitright = true
 
+-- ==================== SESSIONS ====================
+-- Configuration pour auto-session
+opt.sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions"
+
 -- ==================== COMPLÉTION ====================
 opt.completeopt = { "menu", "menuone", "noselect" }
 opt.shortmess:append("c")

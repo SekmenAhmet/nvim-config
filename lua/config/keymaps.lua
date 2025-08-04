@@ -47,6 +47,12 @@ keymap("n", "<leader>ef", "<Cmd>NvimTreeFindFileToggle<CR>", { desc = "Toggle fi
 keymap("n", "<leader>ec", "<Cmd>NvimTreeCollapse<CR>", { desc = "Collapse file explorer" })
 keymap("n", "<leader>er", "<Cmd>NvimTreeRefresh<CR>", { desc = "Refresh file explorer" })
 
+-- Neo-tree - Explorateur moderne
+keymap("n", "<leader>en", "<Cmd>Neotree toggle<CR>", { desc = "Toggle Neo-tree" })
+keymap("n", "<leader>el", "<Cmd>Neotree focus<CR>", { desc = "Focus Neo-tree" })
+keymap("n", "<leader>eg", "<Cmd>Neotree git_status<CR>", { desc = "Neo-tree git status" })
+keymap("n", "<leader>eb", "<Cmd>Neotree buffers<CR>", { desc = "Neo-tree buffers" })
+
 -- ==================== GESTION DES BUFFERS ====================
 
 -- Gestion des buffers via BufferLine
@@ -97,7 +103,7 @@ keymap("n", "<leader>qp", "<Cmd>SessionPurgeOrphaned<CR>", { desc = "Purge orpha
 -- Raccourcis de confort
 keymap("n", "<leader>w", "<Cmd>w<CR>", { desc = "Save file" })
 keymap("n", "<leader>q", "<Cmd>q<CR>", { desc = "Quit" })
-keymap("n", "<leader>x", "<Cmd>x<CR>", { desc = "Save and quit" })
+keymap("n", "<leader>wq", "<Cmd>x<CR>", { desc = "Save and quit" })
 
 -- Nettoyage de la recherche
 keymap("n", "<Esc>", "<Cmd>nohlsearch<CR>", { desc = "Clear search highlight" })
@@ -109,3 +115,17 @@ keymap("v", "K", ":m '<-2<CR>gv=gv", { desc = "Move selection up" })
 -- Rester en mode visuel lors de l'indentation
 keymap("v", "<", "<gv", { desc = "Decrease indent" })
 keymap("v", ">", ">gv", { desc = "Increase indent" })
+
+-- ==================== TROUBLE & DIAGNOSTICS ====================
+
+-- Trouble.nvim - Diagnostics avancés
+keymap("n", "<leader>xx", "<Cmd>Trouble diagnostics toggle<CR>", { desc = "Toggle diagnostics (Trouble)" })
+keymap("n", "<leader>xX", "<Cmd>Trouble diagnostics toggle filter.buf=0<CR>", { desc = "Buffer diagnostics (Trouble)" })
+keymap("n", "<leader>cs", "<Cmd>Trouble symbols toggle focus=false<CR>", { desc = "Symbols (Trouble)" })
+keymap("n", "<leader>cl", "<Cmd>Trouble lsp toggle focus=false win.position=right<CR>", { desc = "LSP references (Trouble)" })
+keymap("n", "<leader>xL", "<Cmd>Trouble loclist toggle<CR>", { desc = "Location list (Trouble)" })
+keymap("n", "<leader>xQ", "<Cmd>Trouble qflist toggle<CR>", { desc = "Quickfix list (Trouble)" })
+
+-- Navigation rapide dans Trouble
+keymap("n", "]x", function() require("trouble").next({skip_groups = true, jump = true}) end, { desc = "Next trouble/quickfix item" })
+keymap("n", "[x", function() require("trouble").prev({skip_groups = true, jump = true}) end, { desc = "Previous trouble/quickfix item" })

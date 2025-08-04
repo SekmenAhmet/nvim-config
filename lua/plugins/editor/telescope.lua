@@ -20,6 +20,8 @@ return {
           "--line-number",
           "--column",
           "--smart-case",
+          "--hidden",
+          "--glob=!.git/",
         },
         prompt_prefix = "   ",
         selection_caret = "  ",
@@ -61,6 +63,7 @@ return {
         find_files = {
           theme = "dropdown",
           previewer = false,
+          find_command = vim.fn.executable("fd") == 1 and { "fd", "--type", "f", "--hidden", "--exclude", ".git" } or nil,
         },
         live_grep = {
           theme = "ivy",
@@ -88,6 +91,7 @@ return {
         },
       },
     })
+
 
     -- Charger les extensions
     require("telescope").load_extension("fzf")
