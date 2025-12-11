@@ -58,6 +58,3 @@ vim.api.nvim_create_autocmd("CursorHold", {
     vim.diagnostic.open_float(nil, opts)
   end
 })
-
--- Réduire le délai pour l'auto-hover (plus réactif)
-vim.opt.updatetime = 300

@@ -1,7 +1,6 @@
 -- Alpha - Page d'accueil
 return {
   "goolord/alpha-nvim",
-  dependencies = { "nvim-tree/nvim-web-devicons" },
   config = function()
     local alpha = require("alpha")
     local dashboard = require("alpha.themes.dashboard")
@@ -82,9 +81,6 @@ return {
         "    ╚═╝  ╚═╝╚══════╝╚══════╝╚══════╝ ╚═════╝      ╚══╝╚══╝  ╚═════╝ ╚═╝  ╚═╝╚══════╝╚═════╝ ╚═╝",
         "",
         "",
-        "                          ╭────────────╮  ╭─────────────────────────╮",
-        "                          │   " .. string.format("%-9s", git_info) .. "   │  │   " .. string.format("%-19s", nvim_info) .. "   │",
-        "                          ╰────────────╯  ╰─────────────────────────╯",
         "",
         "                                ╔═════════════════════════════╗",
         "                                ║       Ready to code ?       ║",

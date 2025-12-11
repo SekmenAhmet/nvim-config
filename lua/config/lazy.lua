@@ -18,7 +18,7 @@ require("lazy").setup({
     { import = "plugins.theme" },
     { import = "plugins.rust" }, -- Configuration Rust ultime
   },
-  checker = { enabled = false },
+  checker = { enabled = true },
   performance = {
     rtp = {
       disabled_plugins = {

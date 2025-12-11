@@ -83,7 +83,5 @@ opt.listchars = {
 }
 
 -- ==================== PLIAGE (FOLDING) ====================
-opt.foldmethod = "expr"
-opt.foldexpr = "nvim_treesitter#foldexpr()"
 opt.foldenable = false -- Désactivé par défaut
 opt.foldlevel = 99

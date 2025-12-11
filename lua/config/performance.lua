@@ -2,11 +2,10 @@
 local opt = vim.opt
 
 -- Optimiser le rendu
-opt.ttyfast = true
-opt.redrawtime = 1500
+opt.redrawtime = 1000
 
 -- Réduire la charge sur les fichiers volumineux
-opt.synmaxcol = 200
+opt.synmaxcol = 300
 opt.maxmempattern = 20000
 
 -- Optimiser les fenêtres
@@ -24,7 +23,6 @@ vim.g.loaded_node_provider = 0
 -- Optimiser les swap et backup
 opt.directory = vim.fn.stdpath("cache") .. "/swap"
 opt.backupdir = vim.fn.stdpath("cache") .. "/backup"
-opt.undodir = vim.fn.stdpath("cache") .. "/undo"
 
 -- Réduire la fréquence de scan des plugins
 vim.g.loaded_matchit = 1

@@ -5,9 +5,7 @@ return {
     dependencies = {
       "nvim-neotest/nvim-nio",
       "nvim-lua/plenary.nvim",
-      "antoinemadec/FixCursorHold.nvim",
       "nvim-treesitter/nvim-treesitter",
-      "rouge8/neotest-rust", -- Adapter Rust
     },
     ft = "rust",
     config = function()
@@ -15,10 +13,7 @@ return {
       
       neotest.setup({
         adapters = {
-          require("neotest-rust") {
-            args = { "--no-capture" },
-            dap_adapter = "codelldb",
-          },
+            -- rustaceanvim will configure the adapter
         },
         
         -- Configuration interface
@@ -171,11 +166,5 @@ return {
       -- === STOP ===
       vim.keymap.set("n", "<leader>tS", function() neotest.run.stop() end, vim.tbl_extend("force", opts, { desc = "Stop running tests" }))
     end,
-  },
-  
-  -- Neotest Rust adapter
-  {
-    "rouge8/neotest-rust",
-    dependencies = { "nvim-neotest/neotest" },
-  },
+  }
 }

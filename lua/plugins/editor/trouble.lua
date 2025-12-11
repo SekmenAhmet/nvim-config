@@ -1,7 +1,6 @@
 -- Trouble.nvim - Diagnostics et navigation avancée
 return {
   "folke/trouble.nvim",
-  dependencies = { "nvim-tree/nvim-web-devicons" },
   opts = {
     position = "bottom",
     height = 10,

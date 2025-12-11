@@ -6,6 +6,15 @@
 
 local keymap = vim.keymap.set
 
+-- ==================== THEMES ====================
+local themes = { "tokyonight", "catppuccin" }
+local current_theme = 1
+
+keymap("n", "<leader>th", function()
+  current_theme = current_theme % #themes + 1
+  vim.cmd("colorscheme " .. themes[current_theme])
+end, { desc = "Switch theme" })
+
 -- ==================== NAVIGATION ====================
 
 -- Navigation entre fenêtres
@@ -40,14 +49,8 @@ keymap("n", "<leader>fh", "<Cmd>Telescope help_tags<CR>", { desc = "Help tags" }
 
 -- ==================== EXPLORATEUR DE FICHIERS ====================
 
--- nvim-tree - NOUVEAU PREFIX: <leader>e pour explorer (plus logique)
-keymap("n", "<C-b>", "<Cmd>NvimTreeToggle<CR>", { desc = "Toggle file explorer" })
-keymap("n", "<leader>ee", "<Cmd>NvimTreeToggle<CR>", { desc = "Toggle file explorer" })
-keymap("n", "<leader>ef", "<Cmd>NvimTreeFindFileToggle<CR>", { desc = "Toggle file explorer on current file" })
-keymap("n", "<leader>ec", "<Cmd>NvimTreeCollapse<CR>", { desc = "Collapse file explorer" })
-keymap("n", "<leader>er", "<Cmd>NvimTreeRefresh<CR>", { desc = "Refresh file explorer" })
-
 -- Neo-tree - Explorateur moderne
+keymap("n", "<C-b>", "<Cmd>Neotree toggle<CR>", { desc = "Toggle Neo-tree" })
 keymap("n", "<leader>en", "<Cmd>Neotree toggle<CR>", { desc = "Toggle Neo-tree" })
 keymap("n", "<leader>el", "<Cmd>Neotree focus<CR>", { desc = "Focus Neo-tree" })
 keymap("n", "<leader>eg", "<Cmd>Neotree git_status<CR>", { desc = "Neo-tree git status" })

@@ -49,7 +49,6 @@ return {
           "notify",
           "toggleterm",
           "lazyterm",
-          "NvimTree",
         },
         buftypes = { "terminal", "nofile", "quickfix", "prompt" },
       },

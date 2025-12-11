@@ -29,8 +29,8 @@ return {
         { "<leader>f", group = "Find" },
         { "<leader>g", group = "Git" },
         { "<leader>q", group = "Session" },
-        { "<leader>r", group = "Rename/Replace" },
-        { "<leader>t", group = "Terminal" },
+        { "<leader>r", group = "Rust" },
+        { "<leader>t", group = "Theme" },
         { "<leader>1", hidden = true },
         { "<leader>2", hidden = true },
         { "<leader>3", hidden = true },
@@ -77,7 +77,6 @@ return {
       
       -- Code actions
       { "<leader>ca", desc = "Code actions" },
-      { "<leader>rn", desc = "Rename symbol" },
       
       -- Terminal
       { "<leader>tf", desc = "Floating terminal" },
@@ -87,6 +86,18 @@ return {
       -- TreeSitter
       { "<leader>a", desc = "Swap parameter next" },
       { "<leader>A", desc = "Swap parameter previous" },
+
+      -- Themes
+      { "<leader>th", desc = "Switch theme" },
+
+      -- Rust
+      { "<leader>rr", desc = "Runnables" },
+      { "<leader>rd", desc = "Debuggables" },
+      { "<leader>re", desc = "Expand macro" },
+      { "<leader>rc", desc = "Open Cargo.toml" },
+      { "<leader>rp", desc = "Parent module" },
+      { "<leader>rj", desc = "Join lines" },
+      { "<leader>rn", desc = "Rename" },
     })
 
     -- Keymaps pour les modes spéciaux

@@ -2,7 +2,6 @@
 return {
   "akinsho/bufferline.nvim",
   version = "*",
-  dependencies = "nvim-tree/nvim-web-devicons",
   config = function()
     require("bufferline").setup({
       options = {
@@ -54,7 +53,7 @@ return {
         sort_by = 'insert_after_current',
         offsets = {
           {
-            filetype = "NvimTree",
+            filetype = "neo-tree",
             text = "File Explorer",
             text_align = "left",
             separator = true
