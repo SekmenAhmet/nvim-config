@@ -91,7 +91,7 @@ return {
     dashboard.section.header.val = create_dynamic_header()
 
     -- Pas de boutons
-    dashboard.section.buttons.val = {}
+    dashboard.section.buttons.opts.enabled = false
 
     -- Footer avec raccourcis utiles
     dashboard.section.footer.val = {

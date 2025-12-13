@@ -34,7 +34,6 @@ return {
         autofocus = false,
         hide_on_select = false,
         copy_register = '"',
-        style = "minimal",
         border = "rounded",
         show_version_date = true,
         show_dependency_version = true,
@@ -78,31 +77,13 @@ return {
           loading = "  ",
         },
       },
-      
-      -- Configuration des sources
-      src = {
-        insert_closing_quote = true,
-        text = {
-          prerelease = "  pre-release ",
-          yanked = "  yanked ",
-        },
-      },
-      
-      -- Configuration null-ls pour diagnostics
-      null_ls = {
-        enabled = true,
-        name = "crates.nvim",
-      },
-      
+
       -- Complétion automatique
       completion = {
         insert_closing_quote = true,
         text = {
           prerelease = "  pre-release ",
           yanked = "  yanked ",
-        },
-        cmp = {
-          enabled = true,
         },
         crates = {
           enabled = true,
@@ -119,29 +100,29 @@ return {
           local opts = { buffer = bufnr, silent = true }
           
           -- === VERSIONS ET UPDATES ===
-          vim.keymap.set("n", "<leader>cv", crates.show_versions_popup, vim.tbl_extend("force", opts, { desc = "Show crate versions" }))
-          vim.keymap.set("n", "<leader>cf", crates.show_features_popup, vim.tbl_extend("force", opts, { desc = "Show crate features" }))
-          vim.keymap.set("n", "<leader>cd", crates.show_dependencies_popup, vim.tbl_extend("force", opts, { desc = "Show dependencies" }))
+          vim.keymap.set("n", "<leader>cv", function() require('crates').show_versions_popup() end, vim.tbl_extend("force", opts, { desc = "Show crate versions" }))
+          vim.keymap.set("n", "<leader>cf", function() require('crates').show_features_popup() end, vim.tbl_extend("force", opts, { desc = "Show crate features" }))
+          vim.keymap.set("n", "<leader>cd", function() require('crates').show_dependencies_popup() end, vim.tbl_extend("force", opts, { desc = "Show dependencies" }))
           
           -- === UPDATES ===
-          vim.keymap.set("n", "<leader>cu", crates.update_crate, vim.tbl_extend("force", opts, { desc = "Update crate" }))
-          vim.keymap.set("v", "<leader>cu", crates.update_crates, vim.tbl_extend("force", opts, { desc = "Update selected crates" }))
-          vim.keymap.set("n", "<leader>ca", crates.update_all_crates, vim.tbl_extend("force", opts, { desc = "Update all crates" }))
-          vim.keymap.set("n", "<leader>cU", crates.upgrade_crate, vim.tbl_extend("force", opts, { desc = "Upgrade crate" }))
-          vim.keymap.set("v", "<leader>cU", crates.upgrade_crates, vim.tbl_extend("force", opts, { desc = "Upgrade selected crates" }))
-          vim.keymap.set("n", "<leader>cA", crates.upgrade_all_crates, vim.tbl_extend("force", opts, { desc = "Upgrade all crates" }))
+          vim.keymap.set("n", "<leader>cu", function() require('crates').update_crate() end, vim.tbl_extend("force", opts, { desc = "Update crate" }))
+          vim.keymap.set("v", "<leader>cu", function() require('crates').update_crates() end, vim.tbl_extend("force", opts, { desc = "Update selected crates" }))
+          vim.keymap.set("n", "<leader>ca", function() require('crates').update_all_crates() end, vim.tbl_extend("force", opts, { desc = "Update all crates" }))
+          vim.keymap.set("n", "<leader>cU", function() require('crates').upgrade_crate() end, vim.tbl_extend("force", opts, { desc = "Upgrade crate" }))
+          vim.keymap.set("v", "<leader>cU", function() require('crates').upgrade_crates() end, vim.tbl_extend("force", opts, { desc = "Upgrade selected crates" }))
+          vim.keymap.set("n", "<leader>cA", function() require('crates').upgrade_all_crates() end, vim.tbl_extend("force", opts, { desc = "Upgrade all crates" }))
           
           -- === NAVIGATION ===
-          vim.keymap.set("n", "<leader>ch", crates.open_homepage, vim.tbl_extend("force", opts, { desc = "Open homepage" }))
-          vim.keymap.set("n", "<leader>cr", crates.open_repository, vim.tbl_extend("force", opts, { desc = "Open repository" }))
-          vim.keymap.set("n", "<leader>cD", crates.open_documentation, vim.tbl_extend("force", opts, { desc = "Open documentation" }))
-          vim.keymap.set("n", "<leader>cC", crates.open_crates_io, vim.tbl_extend("force", opts, { desc = "Open crates.io" }))
+          vim.keymap.set("n", "<leader>ch", function() require('crates').open_homepage() end, vim.tbl_extend("force", opts, { desc = "Open homepage" }))
+          vim.keymap.set("n", "<leader>cr", function() require('crates').open_repository() end, vim.tbl_extend("force", opts, { desc = "Open repository" }))
+          vim.keymap.set("n", "<leader>cD", function() require('crates').open_documentation() end, vim.tbl_extend("force", opts, { desc = "Open documentation" }))
+          vim.keymap.set("n", "<leader>cC", function() require('crates').open_crates_io() end, vim.tbl_extend("force", opts, { desc = "Open crates.io" }))
           
           -- === RELOAD ===
-          vim.keymap.set("n", "<leader>cR", crates.reload, vim.tbl_extend("force", opts, { desc = "Reload crates" }))
+          vim.keymap.set("n", "<leader>cR", function() require('crates').reload() end, vim.tbl_extend("force", opts, { desc = "Reload crates" }))
           
           -- === TOGGLE FEATURES ===
-          vim.keymap.set("n", "<leader>ct", crates.toggle_feature, vim.tbl_extend("force", opts, { desc = "Toggle feature" }))
+          vim.keymap.set("n", "<leader>ct", function() require('crates').toggle_feature() end, vim.tbl_extend("force", opts, { desc = "Toggle feature" }))
         end,
         actions = true,
         completion = true,
@@ -149,14 +130,8 @@ return {
       },
     })
     
-    -- Intégration avec nvim-cmp
-    local cmp = require("cmp")
-    local config = cmp.get_config()
-    table.insert(config.sources, { name = "crates" })
-    cmp.setup(config)
-    
     -- Couleurs personnalisées
-    vim.api.nvim_set_hl(0, "CratesNvimLoading", { fg = "#a6adc8", style = "italic" })
+    vim.api.nvim_set_hl(0, "CratesNvimLoading", { fg = "#a6adc8", italic = true })
     vim.api.nvim_set_hl(0, "CratesNvimVersion", { fg = "#a6e3a1" })
     vim.api.nvim_set_hl(0, "CratesNvimPreRelease", { fg = "#fab387" })
     vim.api.nvim_set_hl(0, "CratesNvimYanked", { fg = "#f38ba8" })
