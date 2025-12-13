@@ -10,10 +10,10 @@ local keymap = vim.keymap.set
 local themes = { "tokyonight", "catppuccin" }
 local current_theme = 1
 
-keymap("n", "<leader>th", function()
+keymap("n", "<leader>ut", function()
   current_theme = current_theme % #themes + 1
   vim.cmd("colorscheme " .. themes[current_theme])
-end, { desc = "Switch theme" })
+end, { desc = "Toggle theme" })
 
 -- ==================== NAVIGATION ====================
 
@@ -132,3 +132,61 @@ keymap("n", "<leader>xQ", "<Cmd>Trouble qflist toggle<CR>", { desc = "Quickfix l
 -- Navigation rapide dans Trouble
 keymap("n", "]x", function() require("trouble").next({skip_groups = true, jump = true}) end, { desc = "Next trouble/quickfix item" })
 keymap("n", "[x", function() require("trouble").prev({skip_groups = true, jump = true}) end, { desc = "Previous trouble/quickfix item" })
+
+-- ==================== QUALITY OF LIFE ====================
+
+-- Duplicate de lignes (comme dans VSCode)
+keymap("n", "<A-j>", ":t.<CR>", { desc = "Duplicate line down", silent = true })
+keymap("n", "<A-k>", ":t.-1<CR>", { desc = "Duplicate line up", silent = true })
+keymap("v", "<A-j>", ":t'><CR>gv", { desc = "Duplicate selection down", silent = true })
+keymap("v", "<A-k>", ":t'<-1<CR>gv", { desc = "Duplicate selection up", silent = true })
+
+-- Select all
+keymap("n", "<C-a>", "ggVG", { desc = "Select all" })
+
+-- Sauvegarde rapide avec Ctrl+S (comme dans tous les éditeurs)
+keymap({ "n", "i", "v" }, "<C-s>", "<Cmd>w<CR><Esc>", { desc = "Save file" })
+
+-- Undo/Redo plus intuitif
+keymap("n", "<C-z>", "u", { desc = "Undo" })
+keymap("n", "<C-y>", "<C-r>", { desc = "Redo" })
+
+-- Meilleure navigation avec wrapped lines
+keymap("n", "j", "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true, desc = "Down (wrapped)" })
+keymap("n", "k", "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true, desc = "Up (wrapped)" })
+
+-- Centrer le curseur après recherche
+keymap("n", "n", "nzzzv", { desc = "Next search result (centered)" })
+keymap("n", "N", "Nzzzv", { desc = "Prev search result (centered)" })
+
+-- Coller sans perdre le registre en mode visuel
+keymap("v", "p", '"_dP', { desc = "Paste without yanking" })
+
+-- Meilleure gestion des fenêtres
+keymap("n", "<leader>-", "<C-w>s", { desc = "Split window below" })
+keymap("n", "<leader>|", "<C-w>v", { desc = "Split window right" })
+keymap("n", "<leader>=", "<C-w>=", { desc = "Equal window sizes" })
+
+-- Resize rapide avec Ctrl+Arrows
+keymap("n", "<C-Up>", ":resize +2<CR>", { desc = "Increase window height", silent = true })
+keymap("n", "<C-Down>", ":resize -2<CR>", { desc = "Decrease window height", silent = true })
+keymap("n", "<C-Left>", ":vertical resize -2<CR>", { desc = "Decrease window width", silent = true })
+keymap("n", "<C-Right>", ":vertical resize +2<CR>", { desc = "Increase window width", silent = true })
+
+-- Toggle options rapide
+keymap("n", "<leader>uw", "<Cmd>set wrap!<CR>", { desc = "Toggle word wrap" })
+keymap("n", "<leader>ur", "<Cmd>set relativenumber!<CR>", { desc = "Toggle relative numbers" })
+keymap("n", "<leader>us", "<Cmd>set spell!<CR>", { desc = "Toggle spell check" })
+keymap("n", "<leader>ul", "<Cmd>set list!<CR>", { desc = "Toggle list chars" })
+
+-- Navigation diagnostics (plus rapide)
+keymap("n", "]d", vim.diagnostic.goto_next, { desc = "Next diagnostic" })
+keymap("n", "[d", vim.diagnostic.goto_prev, { desc = "Previous diagnostic" })
+keymap("n", "<leader>e", vim.diagnostic.open_float, { desc = "Show diagnostic error" })
+
+-- Quick-fix list navigation
+keymap("n", "]q", ":cnext<CR>", { desc = "Next quickfix item", silent = true })
+keymap("n", "[q", ":cprev<CR>", { desc = "Previous quickfix item", silent = true })
+
+-- Highlight sous le curseur
+keymap("n", "<leader>ui", vim.show_pos, { desc = "Inspect position" })

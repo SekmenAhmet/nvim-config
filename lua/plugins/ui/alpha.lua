@@ -15,7 +15,7 @@ return {
     end
     
     local function get_git_status()
-      local ok, handle = pcall(io.popen, "git rev-parse --abbrev-ref HEAD 2>nul")
+      local ok, handle = pcall(io.popen, "git rev-parse --abbrev-ref HEAD 2>/dev/null")
       if not ok or not handle then
         return "󰊢 No Git Repository"
       end

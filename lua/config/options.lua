@@ -34,7 +34,7 @@ opt.signcolumn = "yes"
 opt.cmdheight = 1
 opt.showmode = false
 opt.conceallevel = 0
-opt.pumheight = 10
+opt.pumheight = 15 -- Plus de suggestions visibles (10 → 15)
 
 -- ==================== RECHERCHE ====================
 opt.ignorecase = true
@@ -43,10 +43,10 @@ opt.hlsearch = false
 opt.incsearch = true
 
 -- ==================== PERFORMANCE ====================
-opt.updatetime = 1000
-opt.timeoutlen = 500
-opt.ttimeoutlen = 0
-opt.lazyredraw = false
+opt.updatetime = 250  -- Réduit de 1000ms → 250ms pour autocomplétion rapide
+opt.timeoutlen = 300  -- Réduit de 500ms → 300ms pour keymaps plus rapides
+opt.ttimeoutlen = 0   -- Pas de délai pour les touches terminales
+opt.lazyredraw = false -- Désactivé pour meilleure réactivité
 
 -- ==================== FICHIERS & SAUVEGARDE ====================
 opt.swapfile = false

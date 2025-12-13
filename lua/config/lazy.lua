@@ -17,8 +17,13 @@ require("lazy").setup({
     { import = "plugins.session" },
     { import = "plugins.theme" },
     { import = "plugins.rust" }, -- Configuration Rust ultime
+    { import = "plugins.c" }, -- Configuration C/C++
+    { import = "plugins.python" }, -- Configuration Python
   },
   checker = { enabled = true },
+  rocks = {
+    enabled = false, -- Désactiver luarocks car aucun plugin ne le requiert
+  },
   performance = {
     rtp = {
       disabled_plugins = {

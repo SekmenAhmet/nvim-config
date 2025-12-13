@@ -14,13 +14,21 @@ return {
       }
     })
     
-    -- Auto-installation LSP + Debuggers + Tools pour Rust
-    local packages = { 
-      "rust-analyzer", 
+    -- Auto-installation LSP + Debuggers + Tools
+    local packages = {
+      -- Rust
+      "rust-analyzer",
       "codelldb", -- Debugger Rust
-      "pyright", 
-      "typescript-language-server", 
-      "gopls" 
+      -- Python
+      "pyright",
+      "debugpy", -- Debugger Python
+      "ruff", -- Linter/Formatter Python
+      -- C/C++
+      "clangd",
+      "clang-format",
+      -- Autres
+      "typescript-language-server",
+      "gopls"
     }
     
     vim.api.nvim_create_autocmd("User", {

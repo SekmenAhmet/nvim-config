@@ -3,15 +3,17 @@ return {
   "rmagatti/auto-session",
   config = function()
     require("auto-session").setup({
+      -- Nouvelle syntaxe auto-session (mise à jour)
+      enabled = true,
+      auto_save = true,
+      auto_restore = false, -- Désactiver la restauration automatique
+      auto_create = true,
+      auto_restore_last_session = false,
       log_level = "error",
-      auto_session_enable_last_session = false,
-      auto_session_root_dir = vim.fn.stdpath("data") .. "/sessions/",
-      auto_session_enabled = true,
-      auto_save_enabled = true,
-      auto_restore_enabled = false, -- Désactiver la restauration automatique
-      auto_session_suppress_dirs = { "~/", "~/Projects", "~/Downloads", "/", "C:\\", "C:\\Users", "C:\\Users\\sekme" },
-      auto_session_use_git_branch = false,
-      bypass_session_save_file_types = {
+      root_dir = vim.fn.stdpath("data") .. "/sessions/",
+      suppressed_dirs = { "~/", "~/Projects", "~/Downloads", "/", "C:\\", "C:\\Users", "C:\\Users\\sekme" },
+      git_use_branch_name = false,
+      bypass_save_filetypes = {
         "alpha",
         "dashboard",
         "NvimTree",
@@ -23,10 +25,9 @@ return {
         "nofile",
         "terminal",
       },
-      auto_session_create_enabled = true,
       session_lens = {
         load_on_setup = true,
-        theme_conf = { border = true },
+        picker_opts = { border = true },
         previewer = false,
       },
       pre_save_cmds = {

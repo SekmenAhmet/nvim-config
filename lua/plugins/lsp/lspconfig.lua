@@ -20,15 +20,20 @@ return {
       })
     end
 
-    -- Python - seulement sur fichiers .py
+    -- Python - seulement sur fichiers .py (OPTIMISÉ pour rapidité)
     setup_lsp_for_filetype("pyright", { "python" }, {
       capabilities = capabilities,
       settings = {
         python = {
           analysis = {
-            typeCheckingMode = "basic",
+            typeCheckingMode = "off", -- "basic" → "off" pour vitesse maximale
             autoSearchPaths = true,
             useLibraryCodeForTypes = true,
+            diagnosticMode = "openFilesOnly", -- Analyse seulement les fichiers ouverts
+            autoImportCompletions = true,
+            -- Performance optimisée
+            indexing = true,
+            logLevel = "Error",
           }
         }
       }
@@ -102,7 +107,43 @@ return {
       },
     })
 
-    -- Rust - Géré par rust-tools.nvim (voir plugins/rust/)
+    -- C/C++ - seulement sur fichiers .c/.cpp/.h/.hpp (OPTIMISÉ)
+    setup_lsp_for_filetype("clangd", { "c", "cpp", "objc", "objcpp", "cuda" }, {
+      capabilities = vim.tbl_deep_extend("force", capabilities, {
+        offsetEncoding = { "utf-16" }, -- clangd nécessite utf-16
+      }),
+      cmd = {
+        "clangd",
+        "--background-index",
+        "--clang-tidy",
+        "--header-insertion=iwyu",
+        "--completion-style=bundled", -- "detailed" → "bundled" pour vitesse
+        "--function-arg-placeholders",
+        "--fallback-style=llvm",
+        "--all-scopes-completion",
+        "--pch-storage=memory",
+        "-j=4", -- Utilise 4 threads pour rapidité
+        "--limit-results=20", -- Limite à 20 résultats pour vitesse
+      },
+      init_options = {
+        usePlaceholders = true,
+        completeUnimported = true,
+        clangdFileStatus = true,
+      },
+      settings = {
+        clangd = {
+          InlayHints = {
+            Designators = true,
+            Enabled = true,
+            ParameterNames = true,
+            DeducedTypes = true,
+          },
+          fallbackFlags = { "-std=c++20" },
+        },
+      },
+    })
+
+    -- Rust - Géré par rustaceanvim (voir plugins/rust/)
 
     -- Java - seulement sur fichiers .java
     setup_lsp_for_filetype("jdtls", { "java" }, {
