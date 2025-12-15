@@ -27,3 +27,9 @@ opt.backupdir = vim.fn.stdpath("cache") .. "/backup"
 -- Réduire la fréquence de scan des plugins
 vim.g.loaded_matchit = 1
 vim.g.loaded_matchparen = 1
+
+-- Préfixer le PATH avec les binaires Mason pour que les outils (ruff, eslint_d, etc.) soient trouvés
+local mason_bin = vim.fn.stdpath("data") .. "/mason/bin"
+if not vim.env.PATH:find(vim.pesc(mason_bin)) then
+  vim.env.PATH = mason_bin .. ":" .. vim.env.PATH
+end

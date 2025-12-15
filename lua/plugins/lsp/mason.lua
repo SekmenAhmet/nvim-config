@@ -1,4 +1,4 @@
--- Mason - Gestionnaire LSP (version ultra-simple)
+-- Mason - Gestionnaire LSP / Linters / Formatters
 return {
   "williamboman/mason.nvim",
   build = ":MasonUpdate",
@@ -9,38 +9,63 @@ return {
         icons = {
           package_installed = "✓",
           package_pending = "➜",
-          package_uninstalled = "✗"
-        }
-      }
+          package_uninstalled = "✗",
+        },
+      },
     })
-    
-    -- Auto-installation LSP + Debuggers + Tools
-    local packages = {
-      -- Rust
-      "rust-analyzer",
-      "codelldb", -- Debugger Rust
-      -- Python
-      "pyright",
-      "debugpy", -- Debugger Python
-      "ruff", -- Linter/Formatter Python
-      -- C/C++
+
+    local ensure_installed = {
+      -- LSP
       "clangd",
-      "clang-format",
-      -- Autres
+      "dockerfile-language-server",
+      "docker-compose-language-service",
+      "gopls",
+      "jdtls",
+      "lua-language-server",
+      "pyright",
+      "rust-analyzer",
       "typescript-language-server",
-      "gopls"
+      "yaml-language-server",
+      -- Debuggers
+      "codelldb",
+      "debugpy",
+      -- Linters / Formatters
+      "black",
+      "clang-format",
+      "eslint_d",
+      "hadolint",
+      "isort",
+      "prettierd",
+      "ruff",
+      "shellcheck",
+      "shfmt",
+      "stylua",
+      "yamllint",
     }
-    
-    vim.api.nvim_create_autocmd("User", {
-      pattern = "MasonLoaded", 
-      callback = function()
-        local mason_registry = require("mason-registry")
-        for _, package in ipairs(packages) do
-          if not mason_registry.is_installed(package) then
-            mason_registry.get_package(package):install()
-          end
+
+    -- gopls nécessite Go installé sur la machine
+    if vim.fn.executable("go") == 0 then
+      ensure_installed = vim.tbl_filter(function(name)
+        return name ~= "gopls"
+      end, ensure_installed)
+      vim.notify("Go non détecté dans $PATH : gopls ignoré. Installe Go puis relance Mason si besoin.", vim.log.levels.WARN, { title = "Mason" })
+    end
+
+    local function install_missing()
+      local registry = require("mason-registry")
+      for _, name in ipairs(ensure_installed) do
+        local ok, package = pcall(registry.get_package, name)
+        if ok and not package:is_installed() then
+          package:install()
         end
-      end,
-    })
+      end
+    end
+
+    local registry = require("mason-registry")
+    if registry.refresh then
+      registry.refresh(install_missing)
+    else
+      install_missing()
+    end
   end,
 }

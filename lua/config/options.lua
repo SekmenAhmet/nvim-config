@@ -11,6 +11,11 @@ local opt = vim.opt
 vim.g.mapleader = " "
 vim.g.maplocalleader = "\\"
 
+-- Libérer <C-s>/<C-q> des contrôles de flux du terminal
+if vim.fn.has("unix") == 1 and vim.fn.executable("stty") == 1 then
+  vim.fn.system({ "stty", "-ixon" })
+end
+
 -- ==================== NUMÉROTATION ====================
 opt.number = true
 opt.relativenumber = true

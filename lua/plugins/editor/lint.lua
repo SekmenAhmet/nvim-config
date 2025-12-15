@@ -5,11 +5,23 @@ return {
   config = function()
     local lint = require("lint")
 
+    -- Helper pour éviter les linters non installés
+    local function has_exec(bin)
+      return vim.fn.executable(bin) == 1
+    end
+
+    local python_linters = {}
+    if has_exec("ruff") then
+      table.insert(python_linters, "ruff")
+    else
+      vim.notify("ruff non détecté dans $PATH : lint Python désactivé. Installe ruff (via Mason) pour l'activer.", vim.log.levels.WARN, { title = "nvim-lint" })
+    end
+
     -- Configuration des linters par type de fichier
     lint.linters_by_ft = {
       c = { "clangtidy" },
       cpp = { "clangtidy" },
-      python = { "ruff" },
+      python = python_linters,
       javascript = { "eslint_d" },
       typescript = { "eslint_d" },
       javascriptreact = { "eslint_d" },

@@ -28,6 +28,12 @@ return {
     -- Remplacer vim.notify par nvim-notify
     vim.notify = notify
 
+    -- Charger l'extension Telescope pour l'historique (si dispo)
+    local ok, telescope = pcall(require, "telescope")
+    if ok then
+      telescope.load_extension("notify")
+    end
+
     -- Keymaps pour gérer l'historique des notifications
     vim.keymap.set("n", "<leader>un", function()
       require("notify").dismiss({ silent = true, pending = true })

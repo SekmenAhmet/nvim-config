@@ -15,5 +15,7 @@ return {
   require("plugins.editor.colorizer"),     -- Visualisation couleurs inline
   require("plugins.editor.todo-comments"), -- TODOs colorés et searchables
   require("plugins.editor.ufo"),           -- Code folding intelligent
-  require("plugins.editor.leap"),          -- Navigation ultra-rapide
+  require("plugins.editor.pdfview"),       -- Ouverture rapide des PDF
+  require("plugins.editor.overseer"),      -- Gestionnaire de tâches/commandes
+  require("plugins.editor.startuptime"),   -- Profil démarrage
 }

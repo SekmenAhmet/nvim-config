@@ -47,10 +47,13 @@ keymap("n", "<leader>fc", "<Cmd>Telescope grep_string<CR>", { desc = "Grep strin
 -- Telescope - Aide et configuration
 keymap("n", "<leader>fh", "<Cmd>Telescope help_tags<CR>", { desc = "Help tags" })
 
+-- PDF Viewer externe
+keymap("n", "<leader>pv", "<Cmd>PdfView<CR>", { desc = "Ouvrir le PDF courant" })
+
 -- ==================== EXPLORATEUR DE FICHIERS ====================
 
 -- Neo-tree - Explorateur moderne
-keymap("n", "<C-b>", "<Cmd>Neotree toggle<CR>", { desc = "Toggle Neo-tree" })
+keymap({ "n", "i", "v" }, "<C-b>", "<Esc><Cmd>Neotree toggle<CR>", { desc = "Toggle Neo-tree" })
 keymap("n", "<leader>en", "<Cmd>Neotree toggle<CR>", { desc = "Toggle Neo-tree" })
 keymap("n", "<leader>el", "<Cmd>Neotree focus<CR>", { desc = "Focus Neo-tree" })
 keymap("n", "<leader>eg", "<Cmd>Neotree git_status<CR>", { desc = "Neo-tree git status" })
@@ -104,9 +107,6 @@ keymap("n", "<leader>qp", "<Cmd>SessionPurgeOrphaned<CR>", { desc = "Purge orpha
 -- ==================== AUTRES RACCOURCIS UTILES ====================
 
 -- Raccourcis de confort
-keymap("n", "<leader>w", "<Cmd>w<CR>", { desc = "Save file" })
-keymap("n", "<leader>q", "<Cmd>q<CR>", { desc = "Quit" })
-keymap("n", "<leader>wq", "<Cmd>x<CR>", { desc = "Save and quit" })
 
 -- Nettoyage de la recherche
 keymap("n", "<Esc>", "<Cmd>nohlsearch<CR>", { desc = "Clear search highlight" })

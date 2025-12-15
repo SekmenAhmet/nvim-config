@@ -32,10 +32,10 @@ return {
           expander_highlight = "NeoTreeExpander",
         },
         icon = {
-          folder_closed = "",
-          folder_open = "",
+          folder_closed = "",
+          folder_open = "",
           folder_empty = "󰜌",
-          default = "*",
+          default = "",
           highlight = "NeoTreeFileIcon"
         },
         modified = {
@@ -104,6 +104,7 @@ return {
           ["w"] = "open_with_window_picker",
           ["C"] = "close_node",
           ["z"] = "close_all_nodes",
+          ["<C-b>"] = "close_window",
           ["a"] = { 
             "add",
             config = {

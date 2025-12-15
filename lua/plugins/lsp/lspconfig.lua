@@ -1,47 +1,61 @@
--- LSP Configuration avec chargement conditionnel
+-- LSP Configuration avec configuration centralisée et installations Mason
 return {
   "neovim/nvim-lspconfig",
   dependencies = { "hrsh7th/cmp-nvim-lsp" },
   event = { "BufReadPre", "BufNewFile" },
   config = function()
-    local lspconfig = require("lspconfig")
-    local cmp_nvim_lsp = require("cmp_nvim_lsp")
-    
-    local capabilities = cmp_nvim_lsp.default_capabilities()
+    local configs = require("lspconfig.configs")
+    local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
-    -- Fonction helper pour setup conditionnel
-    local function setup_lsp_for_filetype(server, filetypes, config)
-      vim.api.nvim_create_autocmd("FileType", {
-        pattern = filetypes,
-        callback = function()
-          lspconfig[server].setup(config)
-        end,
-        once = true,
-      })
+    local function setup(server, opts)
+      -- Charger la configuration du serveur sans passer par l'__index déprécié
+      if configs[server] == nil then
+        local ok, config_module = pcall(require, "lspconfig.configs." .. server)
+        if ok then
+          configs[server] = config_module
+        end
+      end
+      local config_tbl = configs[server]
+      if not config_tbl or not config_tbl.setup then
+        return
+      end
+      local config = vim.tbl_deep_extend("force", { capabilities = capabilities }, opts or {})
+      config_tbl.setup(config)
     end
 
-    -- Python - seulement sur fichiers .py (OPTIMISÉ pour rapidité)
-    setup_lsp_for_filetype("pyright", { "python" }, {
-      capabilities = capabilities,
+    -- Serveurs LSP
+    setup("lua_ls", {
+      settings = {
+        Lua = {
+          runtime = { version = "LuaJIT" },
+          workspace = { checkThirdParty = false },
+          diagnostics = { globals = { "vim" } },
+          telemetry = { enable = false },
+        },
+      },
+    })
+
+    setup("pyright", {
       settings = {
         python = {
           analysis = {
-            typeCheckingMode = "off", -- "basic" → "off" pour vitesse maximale
+            typeCheckingMode = "off",
             autoSearchPaths = true,
             useLibraryCodeForTypes = true,
-            diagnosticMode = "openFilesOnly", -- Analyse seulement les fichiers ouverts
+            diagnosticMode = "openFilesOnly",
             autoImportCompletions = true,
-            -- Performance optimisée
             indexing = true,
             logLevel = "Error",
-          }
-        }
-      }
+          },
+        },
+      },
     })
 
-    -- TypeScript/JavaScript - seulement sur fichiers .ts/.js/.tsx/.jsx
-    setup_lsp_for_filetype("ts_ls", { "javascript", "typescript", "typescriptreact", "javascriptreact" }, {
-      capabilities = capabilities,
+    local ts_server = "ts_ls"
+    if configs[ts_server] == nil then
+      ts_server = "tsserver"
+    end
+    setup(ts_server, {
       settings = {
         typescript = {
           inlayHints = {
@@ -51,7 +65,7 @@ return {
             includeInlayPropertyDeclarationTypeHints = false,
             includeInlayFunctionLikeReturnTypeHints = false,
             includeInlayEnumMemberValueHints = false,
-          }
+          },
         },
         javascript = {
           inlayHints = {
@@ -61,14 +75,12 @@ return {
             includeInlayPropertyDeclarationTypeHints = false,
             includeInlayFunctionLikeReturnTypeHints = false,
             includeInlayEnumMemberValueHints = false,
-          }
-        }
-      }
+          },
+        },
+      },
     })
 
-    -- Go - seulement sur fichiers .go
-    setup_lsp_for_filetype("gopls", { "go" }, {
-      capabilities = capabilities,
+    setup("gopls", {
       settings = {
         gopls = {
           analyses = {
@@ -107,23 +119,22 @@ return {
       },
     })
 
-    -- C/C++ - seulement sur fichiers .c/.cpp/.h/.hpp (OPTIMISÉ)
-    setup_lsp_for_filetype("clangd", { "c", "cpp", "objc", "objcpp", "cuda" }, {
+    setup("clangd", {
       capabilities = vim.tbl_deep_extend("force", capabilities, {
-        offsetEncoding = { "utf-16" }, -- clangd nécessite utf-16
+        offsetEncoding = { "utf-16" },
       }),
       cmd = {
         "clangd",
         "--background-index",
         "--clang-tidy",
         "--header-insertion=iwyu",
-        "--completion-style=bundled", -- "detailed" → "bundled" pour vitesse
+        "--completion-style=bundled",
         "--function-arg-placeholders",
         "--fallback-style=llvm",
         "--all-scopes-completion",
         "--pch-storage=memory",
-        "-j=4", -- Utilise 4 threads pour rapidité
-        "--limit-results=20", -- Limite à 20 résultats pour vitesse
+        "-j=4",
+        "--limit-results=20",
       },
       init_options = {
         usePlaceholders = true,
@@ -143,61 +154,9 @@ return {
       },
     })
 
-    -- Rust - Géré par rustaceanvim (voir plugins/rust/)
+    -- Rust géré via rustaceanvim
 
-    -- Java - seulement sur fichiers .java
-    setup_lsp_for_filetype("jdtls", { "java" }, {
-      capabilities = capabilities,
-      settings = {
-        java = {
-          configuration = {
-            updateBuildConfiguration = "interactive",
-          },
-          compile = {
-            nullAnalysis = {
-              mode = "automatic",
-            },
-          },
-          completion = {
-            favoriteStaticMembers = {
-              "org.hamcrest.MatcherAssert.assertThat",
-              "org.hamcrest.Matchers.*",
-              "org.hamcrest.CoreMatchers.*",
-              "org.junit.jupiter.api.Assertions.*",
-              "java.util.Objects.requireNonNull",
-              "java.util.Objects.requireNonNullElse",
-            },
-            importOrder = {
-              "java",
-              "javax",
-              "com",
-              "org",
-            },
-          },
-          sources = {
-            organizeImports = {
-              starThreshold = 9999,
-              staticStarThreshold = 9999,
-            },
-          },
-          codeGeneration = {
-            toString = {
-              template = "${object.className}{${member.name()}=${member.value}, ${otherMembers}}",
-            },
-            useBlocks = true,
-          },
-          inlayHints = {
-            parameterNames = {
-              enabled = "none",
-            },
-          },
-        },
-      },
-    })
-
-    -- Docker - seulement sur Dockerfile
-    setup_lsp_for_filetype("dockerls", { "dockerfile" }, {
-      capabilities = capabilities,
+    setup("dockerls", {
       settings = {
         docker = {
           languageserver = {
@@ -209,15 +168,12 @@ return {
       },
     })
 
-    -- Docker Compose - seulement sur docker-compose.yml
-    setup_lsp_for_filetype("docker_compose_language_service", { "yaml" }, {
-      capabilities = capabilities,
-      settings = {},
+    setup("docker_compose_language_service", {
+      filetypes = { "yaml.docker-compose" },
     })
 
-    -- YAML - seulement sur fichiers .yml/.yaml
-    setup_lsp_for_filetype("yamlls", { "yaml" }, {
-      capabilities = capabilities,
+    setup("yamlls", {
+      filetypes = { "yaml", "yml" },
       settings = {
         yaml = {
           schemas = {
@@ -234,11 +190,11 @@ return {
       },
     })
 
-    -- Keymaps LSP
+    -- Raccourcis LSP
     vim.api.nvim_create_autocmd("LspAttach", {
       group = vim.api.nvim_create_augroup("UserLspConfig", {}),
       callback = function(ev)
-        local opts = { buffer = ev.buf }
+        local opts = { buffer = ev.buf, silent = true }
         vim.keymap.set("n", "gD", vim.lsp.buf.declaration, opts)
         vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
         vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)

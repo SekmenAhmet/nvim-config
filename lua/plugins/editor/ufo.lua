@@ -8,7 +8,7 @@ return {
     vim.o.foldcolumn = "0" -- Pas de colonne fold pour simplicité
     vim.o.foldlevel = 99
     vim.o.foldlevelstart = 99
-    vim.o.foldenable = true
+    vim.o.foldenable = false -- Aligne avec options.lua : folds désactivés par défaut
 
     require("ufo").setup({
       provider_selector = function()

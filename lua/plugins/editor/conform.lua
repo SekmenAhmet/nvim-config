@@ -17,6 +17,12 @@ return {
     formatters_by_ft = {
       lua = { "stylua" },
       python = { "isort", "black" },
+      sh = { "shfmt" },
+      bash = { "shfmt" },
+      zsh = { "shfmt" },
+      vue = { { "prettierd", "prettier" } },
+      svelte = { { "prettierd", "prettier" } },
+      astro = { { "prettierd", "prettier" } },
       javascript = { { "prettierd", "prettier" } },
       typescript = { { "prettierd", "prettier" } },
       javascriptreact = { { "prettierd", "prettier" } },
@@ -27,8 +33,12 @@ return {
       html = { { "prettierd", "prettier" } },
       css = { { "prettierd", "prettier" } },
       scss = { { "prettierd", "prettier" } },
+      graphql = { { "prettierd", "prettier" } },
+      toml = { "taplo" },
+      terraform = { "terraform_fmt" },
       go = { "goimports", "gofmt" },
       rust = { "rustfmt" },
+      ["*"] = { "lsp" }, -- Fallback pour tous les langages supportés par LSP
     },
     format_on_save = {
       timeout_ms = 500,

@@ -16,6 +16,8 @@ require("lazy").setup({
     { import = "plugins.terminal" },
     { import = "plugins.session" },
     { import = "plugins.theme" },
+    { import = "plugins.dap" },
+    { import = "plugins.java" },
     { import = "plugins.rust" }, -- Configuration Rust ultime
     { import = "plugins.c" }, -- Configuration C/C++
     { import = "plugins.python" }, -- Configuration Python

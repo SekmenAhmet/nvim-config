@@ -112,7 +112,7 @@ return {
         vim.keymap.set("n", "<leader>tn", function()
           neotest.run.run()
         end, vim.tbl_extend("force", opts, { desc = "Run nearest test" }))
-        vim.keymap.set("n", "<leader>tf", function()
+        vim.keymap.set("n", "<leader>tF", function()
           neotest.run.run(vim.fn.expand("%"))
         end, vim.tbl_extend("force", opts, { desc = "Run current file tests" }))
         vim.keymap.set("n", "<leader>ta", function()
@@ -139,10 +139,10 @@ return {
         end, vim.tbl_extend("force", opts, { desc = "Toggle output panel" }))
 
         -- NAVIGATION
-        vim.keymap.set("n", "[t", function()
+        vim.keymap.set("n", "[T", function()
           neotest.jump.prev({ status = "failed" })
         end, vim.tbl_extend("force", opts, { desc = "Previous failed test" }))
-        vim.keymap.set("n", "]t", function()
+        vim.keymap.set("n", "]T", function()
           neotest.jump.next({ status = "failed" })
         end, vim.tbl_extend("force", opts, { desc = "Next failed test" }))
 

@@ -17,7 +17,10 @@ return {
       persist_mode = true,
       direction = "float",
       close_on_exit = true,
-      shell = vim.fn.has("win32") == 1 and "powershell.exe" or vim.o.shell,
+      -- Préfère fish si présent, sinon shell par défaut (powershell sur Windows)
+      shell = (vim.fn.has("win32") == 1 and "powershell.exe")
+        or (vim.fn.executable("fish") == 1 and "fish")
+        or vim.o.shell,
       auto_scroll = true,
       float_opts = {
         border = "curved",

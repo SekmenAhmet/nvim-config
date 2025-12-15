@@ -1,17 +1,18 @@
 -- Auto Session - Gestion automatique des sessions
 return {
   "rmagatti/auto-session",
+  dependencies = { "nvim-telescope/telescope.nvim" },
   config = function()
     require("auto-session").setup({
       -- Nouvelle syntaxe auto-session (mise à jour)
       enabled = true,
       auto_save = true,
-      auto_restore = false, -- Désactiver la restauration automatique
+      auto_restore = true,
       auto_create = true,
-      auto_restore_last_session = false,
+      auto_restore_last_session = true,
       log_level = "error",
       root_dir = vim.fn.stdpath("data") .. "/sessions/",
-      suppressed_dirs = { "~/", "~/Projects", "~/Downloads", "/", "C:\\", "C:\\Users", "C:\\Users\\sekme" },
+      suppressed_dirs = { "~/", "~/Projects", "~/Downloads", "/" },
       git_use_branch_name = false,
       bypass_save_filetypes = {
         "alpha",
@@ -32,10 +33,8 @@ return {
       },
       pre_save_cmds = {
         function()
-          -- Fermer nvim-tree avant de sauvegarder la session
-          if vim.bo.filetype == "NvimTree" then
-            vim.cmd("NvimTreeClose")
-          end
+          -- Fermer l'explorateur avant de sauvegarder la session
+          pcall(vim.cmd, "Neotree close")
         end,
       },
       post_restore_cmds = {
@@ -45,6 +44,8 @@ return {
         end,
       },
     })
+
+    pcall(require("telescope").load_extension, "session-lens")
 
     -- Keymaps centralisés dans config/keymaps.lua
   end,
