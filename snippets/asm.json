@@ -1,0 +1,54 @@
+{
+  "program": {
+    "prefix": "prog",
+    "body": [
+      "section .data",
+      "\t$1",
+      "",
+      "section .bss",
+      "\t$2",
+      "",
+      "section .text",
+      "\tglobal _start",
+      "",
+      "_start:",
+      "\t$0",
+      "\t; Exit",
+      "\tmov rax, 60",
+      "\txor rdi, rdi",
+      "\tsyscall"
+    ],
+    "description": "Complete x86-64 program template"
+  },
+  "function": {
+    "prefix": "func",
+    "body": [
+      "${1:function_name}:",
+      "\tpush rbp",
+      "\tmov rbp, rsp",
+      "\t$0",
+      "\tmov rsp, rbp",
+      "\tpop rbp",
+      "\tret"
+    ],
+    "description": "Function with prologue/epilogue"
+  },
+  "syscall": {
+    "prefix": "sys",
+    "body": [
+      "mov rax, ${1:syscall_number}",
+      "syscall$0"
+    ],
+    "description": "Syscall template"
+  },
+  "loop": {
+    "prefix": "loop",
+    "body": [
+      "mov rcx, ${1:count}",
+      "${2:.loop_start}:",
+      "\t$0",
+      "\tloop ${2:.loop_start}"
+    ],
+    "description": "Loop structure"
+  }
+}

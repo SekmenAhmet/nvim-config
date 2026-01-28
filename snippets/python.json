@@ -1,0 +1,86 @@
+{
+  "def": {
+    "prefix": "def",
+    "body": [
+      "def ${1:function_name}(${2:args}):",
+      "\t${3:\"\"\"${4:Docstring}.\"\"\"}",
+      "\t$0"
+    ],
+    "description": "Function definition"
+  },
+  "class": {
+    "prefix": "class",
+    "body": [
+      "class ${1:ClassName}:",
+      "\t\"\"\"${2:Class docstring}.\"\"\"",
+      "\t",
+      "\tdef __init__(self${3:, args}):",
+      "\t\t$0"
+    ],
+    "description": "Class definition"
+  },
+  "if": {
+    "prefix": "if",
+    "body": [
+      "if ${1:condition}:",
+      "\t$0"
+    ],
+    "description": "If statement"
+  },
+  "for": {
+    "prefix": "for",
+    "body": [
+      "for ${1:item} in ${2:iterable}:",
+      "\t$0"
+    ],
+    "description": "For loop"
+  },
+  "while": {
+    "prefix": "while",
+    "body": [
+      "while ${1:condition}:",
+      "\t$0"
+    ],
+    "description": "While loop"
+  },
+  "try": {
+    "prefix": "try",
+    "body": [
+      "try:",
+      "\t${1:pass}",
+      "except ${2:Exception} as ${3:e}:",
+      "\t$0"
+    ],
+    "description": "Try except"
+  },
+  "with": {
+    "prefix": "with",
+    "body": [
+      "with ${1:open(file)} as ${2:f}:",
+      "\t$0"
+    ],
+    "description": "With statement"
+  },
+  "main": {
+    "prefix": "main",
+    "body": [
+      "def main():",
+      "\t$0",
+      "",
+      "",
+      "if __name__ == \"__main__\":",
+      "\tmain()"
+    ],
+    "description": "Main function"
+  },
+  "import": {
+    "prefix": "imp",
+    "body": "import ${1:module}",
+    "description": "Import statement"
+  },
+  "from": {
+    "prefix": "from",
+    "body": "from ${1:module} import ${2:name}",
+    "description": "From import"
+  }
+}

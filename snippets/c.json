@@ -1,0 +1,63 @@
+{
+  "main": {
+    "prefix": "main",
+    "body": [
+      "int main(int argc, char *argv[]) {",
+      "\t$0",
+      "\treturn 0;",
+      "}"
+    ],
+    "description": "Main function"
+  },
+  "for": {
+    "prefix": "for",
+    "body": [
+      "for (${1:int i = 0}; ${2:i < n}; ${3:i++}) {",
+      "\t$0",
+      "}"
+    ],
+    "description": "For loop"
+  },
+  "if": {
+    "prefix": "if",
+    "body": [
+      "if (${1:condition}) {",
+      "\t$0",
+      "}"
+    ],
+    "description": "If statement"
+  },
+  "while": {
+    "prefix": "while",
+    "body": [
+      "while (${1:condition}) {",
+      "\t$0",
+      "}"
+    ],
+    "description": "While loop"
+  },
+  "struct": {
+    "prefix": "struct",
+    "body": [
+      "typedef struct {",
+      "\t$0",
+      "} ${1:name}_t;"
+    ],
+    "description": "Struct definition"
+  },
+  "include": {
+    "prefix": "inc",
+    "body": "#include <${1:stdio.h}>",
+    "description": "Include header"
+  },
+  "printf": {
+    "prefix": "printf",
+    "body": "printf(\"${1:%s}\\n\", ${2:var});$0",
+    "description": "Printf statement"
+  },
+  "malloc": {
+    "prefix": "malloc",
+    "body": "${1:ptr} = malloc(${2:size} * sizeof(${3:type}));$0",
+    "description": "Malloc allocation"
+  }
+}
